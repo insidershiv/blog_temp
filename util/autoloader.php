@@ -3,12 +3,12 @@
 function autoloadClass($className)
 {
     $project  = "app";                 //Name of the project folder
-    // getting path of server or ROOT
-    $path =  $_SERVER["DOCUMENT_ROOT"];
+   
+    $path =  $_SERVER["DOCUMENT_ROOT"];  // getting path of server or ROOT
     
     $path = $path . "/" . $project;
     
-    $locations = array_filter(glob($path. '/*'), 'is_dir');
+    $locations = array_filter(glob($path. '/*'), 'is_dir');    //this gives all those paths which are a directory
        
     $directories = array();
     foreach ($locations as $location) {
@@ -17,9 +17,13 @@ function autoloadClass($className)
     }
 
     
+    $className = explode('\\', $className);    //Exploading because when using namespce we get the namespace\classname
+                                                                 
+    $className = end($className);             //so to get the classname out of what we got we use end() and update the classname
+
     foreach ($directories as $directorie) {
-        $filename = $path . "/" . $directorie . "/model" . "/" .  strtolower($className) . ".php";   //making file directory by appending the classname and ".php"
-       
+        $filename = $path . "/" . $directorie . "/model" . "/" .  strtolower($className) . ".php";
+   
         if (is_readable($filename)) {
             require_once $filename;
         }
@@ -28,7 +32,8 @@ function autoloadClass($className)
 
 
 // to load classes which are in the Util Directory
-function loadutilClass($className)
+function loadutilClass($c
+lassName)
 {
     $filename = __DIR__ . '/' . strtolower($className) . '.php';
 
@@ -36,7 +41,8 @@ function loadutilClass($className)
         require_once $filename;
     }
 }
-spl_autoload_register("autoloadClass");
 
 spl_autoload_register("loadutilClass");
+
+spl_autoload_register("autoloadClass");
 ?>

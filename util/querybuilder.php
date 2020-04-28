@@ -2,7 +2,7 @@
 
 class QueryBuilder
 {
-    private $query = '';          //Will Contain the Query to be Executed
+    public $query = '';          //Will Contain the Query to be Executed
     private $tbname;              //Name of the table
     private $conn=null;           //DB Connection
     private $is_insert = false;   // If called function is INSERT Operation
@@ -94,6 +94,7 @@ class QueryBuilder
         if (count($fetch_fields)==0) {
             $this->query = $this->query . " * ";
         } else {
+            
             foreach ($fetch_fields as $field) {
                 $this->query = $this->query . $field . ' , ' ;
             }
@@ -109,9 +110,6 @@ class QueryBuilder
 
         $this->query = rtrim($this->query, ' AND ');
 
-
-        $this->is_insert = false;
-        $this->bindparam = true;
         $this->is_get = true;
     }
 
