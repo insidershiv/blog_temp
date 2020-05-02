@@ -32,8 +32,7 @@ function autoloadClass($className)
 
 
 // to load classes which are in the Util Directory
-function loadutilClass($c
-lassName)
+function loadutilClass($className)
 {
     $filename = __DIR__ . '/' . strtolower($className) . '.php';
 

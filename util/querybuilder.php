@@ -10,6 +10,7 @@ class QueryBuilder
     private $is_get = false;      //If called function is Get Operation
     private $is_getall = false;   //If called function is GetAll Operation
     private $is_delete = false;   //If called function is DELETE Opereation
+    private $is_update = false;
 
     /*
 
@@ -70,7 +71,7 @@ class QueryBuilder
 
 
     ----- Optinal Paramater ------
-    
+
     @fetch_fields ::::::: ARRAY () of columns you want to get
 
     IF Parameter Given :::::=> fetches the specified columns given in the ARRAY
@@ -94,7 +95,6 @@ class QueryBuilder
         if (count($fetch_fields)==0) {
             $this->query = $this->query . " * ";
         } else {
-            
             foreach ($fetch_fields as $field) {
                 $this->query = $this->query . $field . ' , ' ;
             }
@@ -183,6 +183,45 @@ class QueryBuilder
 
 
 
+    /* *************** UPDATE ******************************
+
+      FUNCTION---------------------->Updates the Row as per given Parameter
+      ###### @params #########
+
+      ------- @Mandatory Parameter ----------
+
+      @columns_to_update ::::::: Array(ASSOCIATIVE ARRAY) :::=> Field names which are to be updated
+      @conditions_to_update::: Array(ASSOCIATIVE ARRAY) :::=>   WHERE CLAUSE Conditions
+
+
+    */
+
+    public function update($columns_to_update, $conditions_to_update)
+    {
+        $this->data = array_merge($columns_to_update, $conditions_to_update);
+
+        $keys = array($conditions_to_update);
+
+       
+        $this->query = $this->query . "UPDATE $this->tbname SET ";
+        $keys = array_keys($columns_to_update);
+
+        foreach ($keys as $key) {
+            $this->query = $this->query . $key . " = " . ":" .$key . " , " ;
+        }
+        $this->query = rtrim($this->query, ", ") ;
+       
+        $this->query = $this->query . " WHERE ";
+        $keys = array_keys($conditions_to_update);
+        foreach ($keys as $key) {
+            $this->query = $this->query . $key . " = " . ":" . $key . " AND ";
+        }
+        $this->query = rtrim($this->query, " AND ");
+        $this->is_update = true;
+    }
+
+
+
 
     /* *************** EXCEUTE  ******************************
 
@@ -225,6 +264,14 @@ class QueryBuilder
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($result) {
                     return $result;
+                } else {
+                    return false;
+                }
+            }
+            if ($this->is_update) {
+                $stmt->execute($this->data);
+                if ($stmt->rowCount()) {
+                    return true;
                 } else {
                     return false;
                 }
