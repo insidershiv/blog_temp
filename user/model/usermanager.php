@@ -20,7 +20,7 @@ class UserManager
         $this->conn  = \Connection::getConnection();
         
         $this->querybuilder = new \QueryBuilder($this->tbname, $this->conn);
-        $this->error = "No Error";
+        $this->error = "No error";
     }
 
     /*
@@ -48,7 +48,7 @@ class UserManager
         if ($this->querybuilder->execute()) {
             return true;
         } else {
-            $this->error = "user could not be created";
+            $this->error= "user could not be created";
             return false;
         }
     }
@@ -108,13 +108,13 @@ class UserManager
                 if ($result["is_active"]) {
                     $token_data = array("id"=>$result["id"], "email"=>$result["email"]);
                     $token = \Token::generate_token($token_data);
-                    if ($token) {
+                    if ($token) {;
                         return $token;
                     } else {
                         $this->error = "Token could not be created";
                     }
                 } else {
-                    $this->error = "User not active";
+                    $this->error= "User not active";
                 }
             } else {
                 $this->error = "password Mismatch";

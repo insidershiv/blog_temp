@@ -2,3 +2,5 @@ RewriteEngine On
 
 RewriteRule user/api/user(.*)$ user/api/user.php?id=$1 [QSA,L]
 RewriteRule user/api/login(.*)$ user/api/login.php
+RewriteRule blog/api/blog(.*)$ blog/api/blog.php?post_id=$1 [QSA,L]
+RewriteRule view/home(.*)$ view/home.php [QSA,L]

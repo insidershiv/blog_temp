@@ -243,7 +243,7 @@ class QueryBuilder
         } else {
             if ($this->is_get) {
                 $stmt->execute($this->data);
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($result) {
                     return $result;
                 } else {

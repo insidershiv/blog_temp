@@ -6,6 +6,8 @@ require_once __DIR__."/../../util/autoloader.php";
 $req_method = $_SERVER["REQUEST_METHOD"];
 
 $usermanager = new model\UserManager();
+$res = array("msg"=>" ");
+
 
 if ($req_method == "POST") {
     $user_data = array();
@@ -22,24 +24,24 @@ if ($req_method == "POST") {
         if ($user_data) {
             if ($usermanager->get_user($search_constraint)) {
                 http_response_code(409);                          // response code shows that the server points duplicate data
-                $usermanager->error = "user already exist";
+                $res = array("msg"=> "user already exist");
             } elseif ($usermanager->add_user($user_data)) {
-                $usermanager->error = "User Created";
+                $res = array("msg"=>"User Created");
             } else {
                 {
                 http_response_code(400);
-                $usermanager->error = "User Not Created";
+                $res= array("msg"=>"User Not Created");
             }
             }
         } else {
             http_response_code(400);
-            $usermanager->error = "Specify All Fields";
+            $res = array("msg"=> "Specify All Fields");
         }
     } else {
-        $usermanager->error = "Required data Missing";
+        $res = array("msg"=> "Required data Missing");
     }
-    
-    return json_encode(($usermanager->get_error()));
+
+    echo json_encode($res);
 }
 
 
@@ -69,7 +71,7 @@ if ($req_method == "PATCH") {
     $params = explode("/", $url_data);
     if (count($params) >2) {
         http_response_code(404);
-        $usermanager->error = "NO such User to update ";
+        $res = array("msg"=> "NO such User to update ");
     } elseif (count($params) == 2) {
         $id = $params[1];
     }
@@ -78,13 +80,14 @@ if ($req_method == "PATCH") {
         $data = json_decode(file_get_contents('php://input'), true);
         $password = $data["password"];
         if ($usermanager->update_password($password, $id)) {
-            $usermanager->error = "Password Updated";
+            $res = array("msg"=>"Password Updated");
         } else {
-            $usermanager->error = "password Not updated";
+            $res = array("msg"=> "password Not updated");
         }
     } else {
-        $usermanager->error = "User Id Not Specified";
+        $res = array("msg"=> "User Id Not Specified");
     }
-    return json_encode(($usermanager->get_error()));
+   
+    echo json_encode($res);
 }
 ?>

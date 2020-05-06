@@ -18,14 +18,14 @@ class Token
         $jwt = $arr[1];
         if ($jwt) {
             try {
-                $decoded = JWT::decode($jwt, self::$secret_key, array('HS256'));
+                $decoded = JWT::decode($jwt, self::$key, array('HS256'));
             } catch (Exception $e) {
                 return false;
             }
         } else {
             return false;
         }
-        return true;
+        return json_encode($decoded);
     }
 
     /*
