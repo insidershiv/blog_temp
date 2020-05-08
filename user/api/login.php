@@ -8,11 +8,14 @@ $usermanager = new model\usermanager();
 
 $req_method = $_SERVER["REQUEST_METHOD"];
 
+$res = array("msg"=>" ");
+
+
 if ($req_method == "POST") {
         $data = json_decode(file_get_contents('php://input'), true);
         $login_credentials = array();
-
-        if(isset($data["email"]) && isset($data["password"])) {
+        //echo isset($data["email"]);
+        if((isset($data["email"]) && isset($data["password"]))    &&    strlen($data["email"]) !=0 && strlen($data["password"]) !=0) {
         $email = $data["email"];
         $password = $data["password"];
         $login_credentials["email"] = $email;
@@ -21,17 +24,23 @@ if ($req_method == "POST") {
         $token = $usermanager->verify_user($login_credentials);
         if($token){
             http_response_code(200);
-            echo $token;
-            //return $token;
+            
+            echo json_encode($token);
+            
+            
         }else {
             http_response_code(400);
            // print_r(($usermanager->get_error()));
+           $res = array("msg"=>$usermanager->get_error());
+           echo json_encode($res);
         }
 
         }else {
-            $usermanager->error["msg"] = "Required fields missing";
+            $res = array("msg"=>"Required fields missing");
+            echo json_encode($res);
         }
-        echo json_encode(($usermanager->get_error()));
+       
+       
     }
 
 ?>

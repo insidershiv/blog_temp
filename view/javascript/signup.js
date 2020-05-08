@@ -4,14 +4,14 @@ var base_url = "http://localhost/app/user";
 
 function signup(event) {
     event.preventDefault();
-    console.log("ss");
+    
     var credentials = {
         'name': document.getElementById("name").value,
         'email': document.getElementById("email").value,
         'password': document.getElementById("password").value
     };
     
-    console.log(credentials);
+    
 
 
     $.ajax({
@@ -20,7 +20,8 @@ function signup(event) {
         data: JSON.stringify(credentials),
         success: function (response, status, xhr) {
             data = JSON.parse(response);
-            console.log(data);
+           
+            alert(data);
         },
         error: function (xhr, textStatus, errorMessage) {
             body = JSON.parse(xhr.responseText);
@@ -37,7 +38,7 @@ $(document).ready(function () {
 
     // $("#signup").click(signup);
 
-    $("#signbtn").click(signup);
+    $("#signup_btn").click(signup);
 
 
 

@@ -126,17 +126,16 @@ class QueryBuilder
 
 
       ----- Optinal Paramater ------
-      @fetch_fields ::::::: ARRAY ()
+      @fetch_fields ::::::: ARRAY ()=>> fetches the given fields .. if you need all the fields then pass empty array
+      @conditions_for_fetch :::::: ARRAY()==> forms WHERE clause conditions for fetching... if not GIVEN fetches without any condition
 
-      IF Parameter Given :::::=> fetches the specified columns given in the ARRAY
-
-      IF Parameter is NOT Given ::::=>  Fetches all the columns
+     
 
 
 
     */
-    public function getall($fetch_fields = array())
-    {
+    public function getall($fetch_fields = array(), $conditions_for_fetch = array())
+    {   
         $this->query = "SELECT ";
        
 
@@ -150,6 +149,22 @@ class QueryBuilder
             $this->query = rtrim($this->query, ', ');
         }
         $this->query = $this->query . " FROM " . $this->tbname;
+
+        if(count($conditions_for_fetch)) {
+            $this->data = $conditions_for_fetch;
+            $this->query = $this->query .  " WHERE " ;
+
+            $keys = array_keys($conditions_for_fetch);
+            foreach ($keys as $key) {
+                $this->query= $this->query . $key . " = " . ":" . $key . " AND " ;
+            }
+    
+            $this->query = rtrim($this->query, ' AND ');
+            
+        }
+
+        echo $this->query;
+
         $this->is_getall = true;
     }
 
@@ -243,7 +258,7 @@ class QueryBuilder
         } else {
             if ($this->is_get) {
                 $stmt->execute($this->data);
-                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($result) {
                     return $result;
                 } else {

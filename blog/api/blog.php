@@ -26,18 +26,22 @@ if ($req_method == "POST") {
                     return true;
                 } else {
                     $res  = array("msg"=> $blogmanager->get_error());
+                    echo json_encode($res);
                 }
             } else {
                 $res = array("msg"=> "Unauthorized Access");
+                echo json_encode($res);
             }
         } else {
             $res = array("msg"=> "Authorization Token missing");
+            echo json_encode($res);
         }
     } else {
         $res = array("msg"=> "Please specify required inputs");
+        echo json_encode($res);
     }
    
-    echo json_encode($res);
+    
 }
 
 
@@ -64,18 +68,25 @@ elseif ($req_method == "DELETE") {
                 
                 if ($blogmanager->delete_post($user_id, $post_id)) {
                     $res = array("msg" => "Post deleted");
+                    echo json_encode($res);
+
                 } else {
                     $res = array("msg" => "Could not delete user post");
+                    echo json_encode($res);
+
                 }
             } else {
                 $res = array("msg"=> "User Not authorized");
+                echo json_encode($res);
+
             }
         } else {
             $res = array("msg"=> "Token missing in the header");
+            echo json_encode($res);
+
         }
     }
-    $res= array("msg"=>$blogmanager->get_error());
-    echo json_encode($res);
+   
 }
 
 /*  *******************PATCH*******************     */

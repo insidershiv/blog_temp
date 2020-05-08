@@ -56,7 +56,7 @@ class UserManager
 
     public function get_user($conditions_for_fetch)
     {
-        $fields_to_fetch = array("name","email", "password", "id", "is_active");
+        $fields_to_fetch = array("name","email",  "id", "is_active");
         $this->querybuilder->get($conditions_for_fetch, $fields_to_fetch);
         $result = $this->querybuilder->execute();
         if ($result) {
@@ -101,14 +101,15 @@ class UserManager
         }
         $this->querybuilder->get($fetch_condition);
         $result = $this->querybuilder->execute();
-       
+        
+        
         if ($result) {
-            $password = $user["password"];
+            $password = $user["password"]; 
             if (password_verify($password, $result["password"])) {
                 if ($result["is_active"]) {
                     $token_data = array("id"=>$result["id"], "email"=>$result["email"]);
                     $token = \Token::generate_token($token_data);
-                    if ($token) {;
+                    if ($token) {
                         return $token;
                     } else {
                         $this->error = "Token could not be created";

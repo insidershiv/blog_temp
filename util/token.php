@@ -54,9 +54,7 @@ class Token
 
         $result["jwt"] = $jwt;
 
-        return json_encode(
-            $result
-        );
+       return $result;
     }
 }
 ?>

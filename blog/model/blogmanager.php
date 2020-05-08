@@ -84,6 +84,7 @@ class BlogManager
             return $data;
         }else {
             return false;
+
         }
 
     }
@@ -92,9 +93,14 @@ class BlogManager
     public function get_all_post($user_id) {
         $fetch_condition = array("user_id"=>$user_id);
         $fetch_fields = array("post_content", "post_id", "user_id");
-        $this->querybuilder->get($fetch_condition, $fetch_fields);
+        $this->querybuilder->getall($fetch_fields,$fetch_condition);
         $data = $this->querybuilder->execute();
-        print_r($data);
+        if($data){
+            return $data;
+        }else {
+            $this->error = "No data associated with given user_id";
+            return false;
+        }
     }
 }
 ?>
