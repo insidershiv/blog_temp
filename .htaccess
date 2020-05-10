@@ -5,7 +5,7 @@
     Header set Expires 0
 </IfModule>
 
-<FilesMatch "\.(css|flv|gif|htm|html|ico|jpe|jpeg|jpg|js|mp3|mp4|png|pdf|swf|txt)$">
+<FilesMatch "\.(css|flv|gif|htm|html|ico|jpe|jpeg|jpg|js|mp3|mp4|png|pdf|swf|txt|php)$">
     <IfModule mod_expires.c>
         ExpiresActive Off
     </IfModule>
@@ -27,6 +27,6 @@ RewriteEngine On
 RewriteRule user/api/user(.*)$ user/api/user.php?id=$1 [QSA,L]
 RewriteRule user/api/login(.*)$ user/api/login.php
 RewriteRule blog/api/blog(.*)$ blog/api/blog.php?post_id=$1 [QSA,L]
-RewriteRule index(.*)$ index.html [QSA,L]
-RewriteRule userprofile(.*)$ userprofile.html [QSA,L]
-RewriteRule signup(.*)$ signup.html [QSA,L]
+RewriteRule ^index(.*)$ index.html [QSA,L]
+RewriteRule ^userprofile(.*)$ userprofile.html [QSA,L]
+RewriteRule ^signup(.*)$ signup.html [QSA,L]

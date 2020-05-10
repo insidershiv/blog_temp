@@ -47,6 +47,7 @@ if ($req_method == "POST") {
             echo json_encode($res);
         }
     } else {
+        http_response_code(400);
         $res = array("msg"=> "Required data Missing");
         echo json_encode($res);
     }

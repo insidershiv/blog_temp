@@ -21,7 +21,7 @@ function signIn(event) {
             document.location.href = "userprofile";
         },  
         error: function (response) {
-            console.log(response.responseText);
+            data = response.responseText;
             alert("Credentials do not match");
         }
     });
@@ -35,6 +35,15 @@ var base_url = "http://localhost/app/user";
 
 $(document).ready(function () {
 
-    $("#signin_btn").click(signIn);
+    // coookie avaible
+    
+    if(Cookies.get("user_id") != undefined){
+        document.location.href="userprofile";
 
+   
+
+    }
+    else {
+        $("#signin_btn").click(signIn);
+    }
 });

@@ -18,7 +18,7 @@ $header = apache_request_headers();
 if ($req_method == "POST") {
     $header = apache_request_headers();
     $data = json_decode(file_get_contents('php://input'), true);
-    if (isset($data["post_title"]) && isset($data["post_content"])) {
+    if ((isset($data["post_title"]) && strlen($data["post_title"])!=0)  && (isset($data["post_content"]) && strlen($data["post_content"]) != 0)){
         if (isset($header["Authorization"])) {
             $post_title = $data["post_title"];
             $post_content = $data["post_content"];
@@ -27,20 +27,27 @@ if ($req_method == "POST") {
             if ($decoded_data) {
                 $id = $decoded_data["data"]["user_id"];
                 if ($blogmanager->add_post($post_title, $post_content, $id)) {
-                    return true;
+                    $res =  array("msg"=>"post created");
+                    echo json_encode($res);
+                   
                 } else {
+                    
+                    http_response_code(400);
                     $res  = array("msg"=> $blogmanager->get_error());
                     echo json_encode($res);
                 }
             } else {
+                http_response_code(401);
                 $res = array("msg"=> "Unauthorized Access");
                 echo json_encode($res);
             }
         } else {
+            http_response_code(401);
             $res = array("msg"=> "Authorization Token missing");
             echo json_encode($res);
         }
     } else {
+        http_response_code(401);
         $res = array("msg"=> "Please specify required inputs");
         echo json_encode($res);
     }
