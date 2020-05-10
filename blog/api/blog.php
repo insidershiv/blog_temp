@@ -72,20 +72,24 @@ elseif ($req_method == "DELETE") {
                 $user_id = $decoded_data["data"]["user_id"];
                 
                 if ($blogmanager->delete_post($user_id, $post_id)) {
+                    http_response_code(200);
                     $res = array("msg" => "Post deleted");
                     echo json_encode($res);
 
                 } else {
+                    http_response_code(400);
                     $res = array("msg" => "Could not delete user post");
                     echo json_encode($res);
 
                 }
             } else {
+                http_response_code(401);
                 $res = array("msg"=> "User Not authorized");
                 echo json_encode($res);
 
             }
         } else {
+            http_response_code(400);
             $res = array("msg"=> "Token missing in the header");
             echo json_encode($res);
 

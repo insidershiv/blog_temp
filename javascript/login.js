@@ -8,16 +8,18 @@ function signIn(event) {
    
     $.ajax({
         type: "POST",
-        url: base_url + "/api/login.php",
+        url: base_url + "/api/login",
         data: JSON.stringify(credentials),
         success: function (data, status, xhr) {
             data = JSON.parse(data);
-            Cookies.set("name", data.name);
-            Cookies.set("email", data.email);
-            Cookies.set("id", data.id);
-            Cookies.set("token", data.jwt);
+            
+            Cookies.set("name", data.name, { sameSite: 'lax' });
+            Cookies.set("email", data.email, { sameSite: 'lax' });
+            Cookies.set("user_id", data.user_id, { sameSite: 'lax' });
+            Cookies.set("token", data.jwt, { sameSite: 'lax' });
+
             document.location.href = "userprofile";
-        },
+        },  
         error: function (response) {
             console.log(response.responseText);
             alert("Credentials do not match");

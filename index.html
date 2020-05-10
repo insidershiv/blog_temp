@@ -10,58 +10,45 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    
 </head>
 
 <body>
-
-
+    
+    
+    
     <header class="main-header">
-
+        
         <div class="main-logo">
-
+            
             <a href="#">Home</a>
         </div>
-
+        
         <nav class="main-nav">
-
+            
             <ul class="nav-items" id="items">
-
-               
-                <li class="nav-item" id="post"> <a href="#" >My Posts</a> </li>
                 
-                <li class="nav-item" id="logout"> <a href="#">Logout</a> </li>
-
-
+                
+                
+                
             </ul>
         </nav>
     </header>
-
-<div class="post_items" id="user-post">
-
-    <ul class="nav-items" id="post-items">
-     
-        
-
-
-
-
-    </ul>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
+    
+    <div class="form">
+        <form class="form-pos">
+            
+            
+            <input type="email" placeholder="email" id="email" class="form-data" name="email" required />
+            <input type="text" placeholder="password" class="form-data" id="password" name="password" required />
+            <input type="submit" value="SignIn" id = "signin_btn" class="submit">
+            <!-- <button name="btn" id="signin_btn" class="submit">SignIn</button> -->
+        </form>
+    </div>
+    
+    
+    
 </body>
-
-<script src="javascript/profile.js"></script>
+<script type="text/javascript" src="javascript/login.js"></script>
 
 </html>
