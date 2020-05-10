@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    background-image: url("../images/2927262.jpg");
+
     opacity: 50%;
 }
 
@@ -32,11 +32,11 @@ body {
 .nav-item {
     display: inline-block;
     margin: 5px;
-    
+
 }
 
 .main-header a {
-    color: rgb(255, 255, 255);
+    color: rgb(15, 13, 13);
 }
 
 a {
@@ -46,10 +46,10 @@ a {
 #signup-form {
     width: 100%;
     display: none;
-   
+
 }
 
-#login-form{
+#login-form {
     /* width: 100%; */
     display: block;
     height: 300px;
@@ -66,15 +66,50 @@ a {
 .form-data {
     display: block;
     padding: 20px;
-    margin:   auto;
+    margin: auto;
     margin-bottom: 15px;
     width: 100%;
 }
 
 .submit {
-    margin: auto ;
+    margin: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: tomato;
+    padding: 10px 20px;
+    margin: 5px 0;
+    color: white;
+    cursor: pointer;
 }
 
 #logout_item {
     display: none;
+}
+
+.form input[type=text] {
+    border: 2px solid DodgerBlue;
+    border-radius: 10px;
+}
+
+
+.form input[type=email] {
+    border: 2px solid DodgerBlue;
+    border-radius: 10px;
+}
+
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    width: 40%;
+    border-radius: 5px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+.container {
+    padding: 2px 16px;
 }

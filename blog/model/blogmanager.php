@@ -76,7 +76,7 @@ class BlogManager
 
     public function get_post($post_id) {
         $fetch_condition = array("post_id"=>$post_id);
-        $fetch_fields = array("post_content", "user_id", "post_id");
+        $fetch_fields = array("post_content", "user_id", "post_id", "post_title");
 
         $this->querybuilder->get($fetch_condition, $fetch_fields);
         $data = $this->querybuilder->execute();
@@ -92,7 +92,7 @@ class BlogManager
 
     public function get_all_post($user_id) {
         $fetch_condition = array("user_id"=>$user_id);
-        $fetch_fields = array("post_content", "post_id", "user_id");
+        $fetch_fields = array("post_content", "post_id", "user_id", "post_title");
         $this->querybuilder->getall($fetch_fields,$fetch_condition);
         $data = $this->querybuilder->execute();
         if($data){

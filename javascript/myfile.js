@@ -1,4 +1,3 @@
-
 function signIn(event) {
     event.preventDefault();
 
@@ -13,10 +12,15 @@ function signIn(event) {
         data: JSON.stringify(credentials),
         success: function (data, status, xhr) {
             data = JSON.parse(data);
-            console.log(data);
+            Cookies.set("name", data.name, { sameSite: 'lax' });
+            Cookies.set("email", data.email, { sameSite: 'lax' });
+            Cookies.set("id", data.user_id, { sameSite: 'lax' });
+            Cookies.set("token", data.jwt, { sameSite: 'lax' });
+            document.location.href = "userprofile";
         },
         error: function (response) {
             console.log(response.responseText);
+            alert("Credentials do not match");
         }
     });
 
@@ -32,4 +36,3 @@ $(document).ready(function () {
     $("#signin_btn").click(signIn);
 
 });
-

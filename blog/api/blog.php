@@ -1,4 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 use userblog as blog;
 use usermodel as model;
 
@@ -21,7 +25,7 @@ if ($req_method == "POST") {
             $token = $header["Authorization"];
             $decoded_data  = json_decode(Token::verify_token($token), true);
             if ($decoded_data) {
-                $id = $decoded_data["data"]["id"];
+                $id = $decoded_data["data"]["user_id"];
                 if ($blogmanager->add_post($post_title, $post_content, $id)) {
                     return true;
                 } else {
@@ -57,6 +61,7 @@ elseif ($req_method == "DELETE") {
     if (count($params) !=2) {
         http_response_code(404);
         $res = array("msg"=> "Post_id missing");
+        echo json_encode($res);
     } else {
         $post_id = $params[1];
 
@@ -64,7 +69,7 @@ elseif ($req_method == "DELETE") {
             $token = $header["Authorization"];
             $decoded_data  = json_decode(Token::verify_token($token), true);
             if ($decoded_data) {
-                $user_id = $decoded_data["data"]["id"];
+                $user_id = $decoded_data["data"]["user_id"];
                 
                 if ($blogmanager->delete_post($user_id, $post_id)) {
                     $res = array("msg" => "Post deleted");
@@ -112,7 +117,7 @@ elseif ($req_method == "PATCH") {
                 $token = $header["Authorization"];
                 $decoded_data  = json_decode(Token::verify_token($token), true);
                 if ($decoded_data) {
-                    $user_id = $decoded_data["data"]["id"];
+                    $user_id = $decoded_data["data"]["user_id"];
                     
                     if ($blogmanager->update_post($user_id, $post_id, $post_content)) {
                         $res = array("msg" => "Post updated");
@@ -143,7 +148,8 @@ elseif ($req_method == "GET") {
             $token = $header["Authorization"];
             $decoded_data  = json_decode(Token::verify_token($token), true);
             if ($decoded_data) {
-                $user_id = $decoded_data["data"]["id"];
+                
+                $user_id = $decoded_data["data"]["user_id"];
 
 
                 $data = $_GET["post_id"];
@@ -152,35 +158,42 @@ elseif ($req_method == "GET") {
        
                 $params = explode('/', $data);
                 if (count($params) > 2) {
+                    // invalid parameters more than 2 
                     http_response_code(404);
                     $res = array("msg" => "Post_id missing");
+                    echo json_encode($res);
                 } elseif (count($params)==1) {
                     //get agell posts
                    $data = $blogmanager->get_all_post($user_id);
-                   if($data){
-                       echo($data);
-                   }else {
-                       echo "error";
-                   }
-
+                   $res = $data ? $data : array();
+                   echo json_encode($res);
+                   
                 } else {
                     $post_id = $params[1];
                     $data =  $blogmanager->get_post($post_id);
+                    
                     if ($data) {
-                       echo($data);
-                        $res=array("msg" =>"Data Retrieved");
+                        http_response_code(200);
+                        echo json_encode($data);
+                       
+                        
                     } else {
-                        $res = array("msg"=>"could not get Post_data");
+                        http_response_code(404);
+                        $res = array("msg"=>"No such blog exists");
+                        echo json_encode($res);
                     }
                 }
             } else {
+                http_response_code(401);
                 $res = array("msg"=>"Unauthorized Access");
+                echo json_encode($res);
             }
         } else {
             $res = array("msg"=>"Token not set in Header");
+            echo json_encode($res);
         }
     }
     
-    echo(json_encode($res));
+   
 }
 ?>

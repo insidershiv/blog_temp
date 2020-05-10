@@ -1,4 +1,9 @@
 <?php
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 use usermodel as model;
 
 require_once __DIR__."/../../util/autoloader.php";
@@ -65,7 +70,7 @@ if ($req_method == "GET") {
     } elseif (count($params) == 2) {
         $id = $params[1];
         $fetch_fields = array("name", "email");
-        $fetch_conditions = array("id"=>$id);
+        $fetch_conditions = array("user_id"=>$id);
         $result = $usermanager->get_user($fetch_conditions);
         if($result){
             echo json_encode(($result));

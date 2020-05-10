@@ -56,7 +56,7 @@ class UserManager
 
     public function get_user($conditions_for_fetch)
     {
-        $fields_to_fetch = array("name","email",  "id", "is_active");
+        $fields_to_fetch = array("name","email",  "user_id", "is_active");
         $this->querybuilder->get($conditions_for_fetch, $fields_to_fetch);
         $result = $this->querybuilder->execute();
         if ($result) {
@@ -97,7 +97,7 @@ class UserManager
         if ($user["email"]) {
             $fetch_condition["email"] = $user["email"];
         } else {
-            $fetch_condition["id"] = $user["id"];
+            $fetch_condition["id"] = $user["user_id"];
         }
         $this->querybuilder->get($fetch_condition);
         $result = $this->querybuilder->execute();
@@ -107,7 +107,7 @@ class UserManager
             $password = $user["password"]; 
             if (password_verify($password, $result["password"])) {
                 if ($result["is_active"]) {
-                    $token_data = array("id"=>$result["id"], "email"=>$result["email"]);
+                    $token_data = array("user_id"=>$result["user_id"], "email"=>$result["email"], "name"=>$result["name"]);
                     $token = \Token::generate_token($token_data);
                     if ($token) {
                         return $token;
@@ -133,7 +133,7 @@ class UserManager
         $password = array();
         $user_password = password_hash($user_password, PASSWORD_DEFAULT);
         $password["password"] = $user_password;
-        $user_constraint = array("id"=>$user_constraint);
+        $user_constraint = array("user_id"=>$user_constraint);
         $this->querybuilder->update($password, $user_constraint);
         if ($this->querybuilder->execute()) {
             return true;

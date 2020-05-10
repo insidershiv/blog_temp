@@ -129,13 +129,13 @@ class QueryBuilder
       @fetch_fields ::::::: ARRAY ()=>> fetches the given fields .. if you need all the fields then pass empty array
       @conditions_for_fetch :::::: ARRAY()==> forms WHERE clause conditions for fetching... if not GIVEN fetches without any condition
 
-     
+
 
 
 
     */
     public function getall($fetch_fields = array(), $conditions_for_fetch = array())
-    {   
+    {
         $this->query = "SELECT ";
        
 
@@ -150,7 +150,7 @@ class QueryBuilder
         }
         $this->query = $this->query . " FROM " . $this->tbname;
 
-        if(count($conditions_for_fetch)) {
+        if (count($conditions_for_fetch)) {
             $this->data = $conditions_for_fetch;
             $this->query = $this->query .  " WHERE " ;
 
@@ -160,10 +160,9 @@ class QueryBuilder
             }
     
             $this->query = rtrim($this->query, ' AND ');
-            
         }
 
-        echo $this->query;
+       
 
         $this->is_getall = true;
     }
