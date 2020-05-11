@@ -113,7 +113,7 @@ function appened_post(data) {
     for (i = 0; i < data.length; i++) {
         var count = 0 ;
         
-        var childs = "<li id= l" + data[i].post_id + ">" + "<br>" + "<h3 class=title> " + data[i].post_title + "</h3>" + "<section>" + data[i].post_content + "</section>" + "<br>";
+        var childs = "<div id= l" + data[i].post_id + " class='post_item'>"  +  "<br>" +  "<h3 class=title> " + data[i].post_title + "</h3>" + "<section>" + data[i].post_content + "</section>" + "<br>";
         if (data[i].user_id == my_id)
             param_data = data[i];
             
@@ -121,7 +121,7 @@ function appened_post(data) {
             childs = childs + "<button id = e" + data[i].post_id + " class='submit' onclick="+"edit_post(this.id)"  + ">Edit Post</button>";
 
 
-        childs = childs + "</li>"
+        childs = childs + "</div>"
         $("#post-items").prepend(childs);
 
     }
