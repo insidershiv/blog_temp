@@ -132,21 +132,30 @@ elseif ($req_method == "PATCH") {
                     
                     if ($blogmanager->update_post($user_id, $post_id, $post_content,$post_title)) {
                         $res = array("msg" => "Post updated");
+                        echo json_encode($res);
                     } else {
+                        http_response_code(400);
                         $res = array("msg" => "Could not update post");
+                        echo json_encode($res);
                     }
                 } else {
+                    http_response_code(401);
                     $res = array("msg" => "User Not authorized");
+                    echo json_encode($res);
                 }
             } else {
+                http_response_code(400);
                 $res = array("msg" => "Token missing in the header");
+                echo json_encode($res);
             }
         }
     } else {
+        http_response_code(422);
         $res = array("msg" => "please specify Post content");
+        echo json_encode($res);
     }
    
-    echo json_encode($res);
+   
 }
 
 

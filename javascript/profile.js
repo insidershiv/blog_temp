@@ -17,7 +17,7 @@ $(document).ready(function () {
         var name = Cookies.get("name");
 
 
-        $("#items").prepend('<li class="nav-item" id="username"> <a href="#" >' + name + '</a></li>');
+        $("#items").prepend('<li class="nav-item" id="username"> <a href="userprofile" >' + name + '</a></li>');
         document.onload = get_post();
 
     }

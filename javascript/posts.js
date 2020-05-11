@@ -1,25 +1,26 @@
 base_url = "http://localhost/app/blog/api";
 
+var post_id = localStorage.getItem("gid");
+console.log(post_id);
 
 $(document).ready(function () {
 
-    
+    // var post_id = localStorage.getItem("gid");
+    // console.log(post_id);
 
 if (Cookies.get("token") == undefined) {
     document.location.href = "index";
 } else {
 
     var name = Cookies.get("name");
-    $("#items").prepend('<li class="nav-item" id="username"> <a href="#" >' + name + '</a></li>');
+    $("#items").prepend('<li class="nav-item" id="username"> <a href="userprofile" >' + name + '</a></li>');
 
     if (localStorage.getItem("gid") == null) {
 
         document.getElementById("post_btn").innerText = "Post";
         
         $("#post_btn").click(create_post);
-        localStorage.removeItem("gid");
-        localStorage.removeItem("gpost_title");
-        localStorage.removeItem("gpost_body");
+       
     
     } else {
         
@@ -100,17 +101,23 @@ function update_post(event){
     console.log (localStorage.getItem("gid"));
     $.ajax({
         type: "PATCH",
-        url: base_url+"/blog/" + localStorage.getItem("gid"),
+        url: base_url+"/blog/" + post_id,
         data: JSON.stringify(data),
         headers: {
             Authorization: "Bearer " + Cookies.get("token")
         },
         success: function (response,status,xhr) {
             data = JSON.parse(response);
-            console.log(data);
+            if(window.confirm(data.msg)){
+
+                document.location.href = "userprofile";
+
+            }else {
+                document.location.href = "userprofile";
+            }
         },
         error: function (xhr, textStatus, errorMessage){
-            console.log(xhr.responseText);
+            console.log(xhr);
         }
     });
 
