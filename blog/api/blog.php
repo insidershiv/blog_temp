@@ -113,9 +113,9 @@ elseif ($req_method == "PATCH") {
     
     $post_data = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($post_data["post_content"])) {
+    if (isset($post_data["post_content"]) && isset($post_data["post_title"])) {
         $post_content = $post_data["post_content"];
-
+        $post_title   = $post_data["post_title"];
         $data = $_GET["post_id"];
         $params = explode('/', $data);
         if (count($params) !=2) {
@@ -130,7 +130,7 @@ elseif ($req_method == "PATCH") {
                 if ($decoded_data) {
                     $user_id = $decoded_data["data"]["user_id"];
                     
-                    if ($blogmanager->update_post($user_id, $post_id, $post_content)) {
+                    if ($blogmanager->update_post($user_id, $post_id, $post_content,$post_title)) {
                         $res = array("msg" => "Post updated");
                     } else {
                         $res = array("msg" => "Could not update post");

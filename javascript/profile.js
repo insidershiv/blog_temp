@@ -1,4 +1,7 @@
 base_url = "http://localhost/app/blog";
+var id = undefined;
+var body = undefined;
+var title = undefined; 
 
 $(document).ready(function () {
 
@@ -15,17 +18,9 @@ $(document).ready(function () {
 
 
         $("#items").prepend('<li class="nav-item" id="username"> <a href="#" >' + name + '</a></li>');
-
-
-
-        $("#logout").click(logout);
-
         document.onload = get_post();
 
     }
-
-
-
 
 });
 
@@ -59,26 +54,18 @@ function get_post() {
 }
 
 
-function logout(event) {
-    event.preventDefault();
-
-    Cookies.remove("name", {
-        sameSite: 'lax'
-    });
-    Cookies.remove("user_id", {
-        sameSite: 'lax'
-    });
-    Cookies.remove("token", {
-        sameSite: 'lax'
-    });
-    document.location.href = "index";
-}
 
 
 function delete_post(id) {
 
 
     //delete ajax request method
+            
+             id = id.substr(1,id.length-1);
+                
+          
+            
+
 
     $.ajax({
         type: "DELETE",
@@ -89,14 +76,27 @@ function delete_post(id) {
         success: function (response) {
             data = JSON.parse(response);
             console.log(data);
-            var posts = document.getElementById("post-items");
+            
+            var posts = document.getElementById("post-items");   //getting post element it is an object
 
-            var post = posts.childNodes.item("l" + id);
-            posts.removeChild(post);
-        },
+            
+            var childNodes = posts.childNodes;                 //getting childnodes of the postnodes array of objects
+            var post = undefined;
+            for ( var i =0 ; i < childNodes.length ; i++){      //searching and trying to match the id of the button with the id of the <li> to be deleted
+                
+                if ( childNodes[i].id == "l"+ id){
+                    post = childNodes[i];
+                    break;
+                }
+                
+            } 
+            posts.removeChild(post);                    //removing the post from UI by removing child
+            
+        }, 
 
         error: function (response) {
-            console.log(response);
+            
+            console.log(response.responseText);
             // data = JSON.parse(response);
             // console.log(data);
         }
@@ -111,10 +111,15 @@ function appened_post(data) {
 
     my_id = Cookies.get("user_id");
     for (i = 0; i < data.length; i++) {
-
+        var count = 0 ;
+        
         var childs = "<li id= l" + data[i].post_id + ">" + "<br>" + "<h3 class=title> " + data[i].post_title + "</h3>" + "<section>" + data[i].post_content + "</section>" + "<br>";
         if (data[i].user_id == my_id)
-            childs = childs + "<button id =" + data[i].post_id + " onclick=" + "delete_post(this.id) " + ">Delete</button>";
+            param_data = data[i];
+            
+            childs = childs + "<button id = d" + data[i].post_id + " class='submit' onclick=" + "delete_post(this.id) " + ">Delete</button>";
+            childs = childs + "<button id = e" + data[i].post_id + " class='submit' onclick="+"edit_post(this.id)"  + ">Edit Post</button>";
+
 
         childs = childs + "</li>"
         $("#post-items").prepend(childs);
@@ -125,4 +130,32 @@ function appened_post(data) {
 
 
 
+}
+
+function edit_post(id) {
+    
+    
+
+    id = id.substr(1,id.length-1);                      //id is the post_id which we want to edit we got from clicking the button
+                
+    var posts = document.getElementById("post-items");
+
+    
+    var childNodes = posts.childNodes;
+    var post = undefined;
+    for ( var i =0 ; i < childNodes.length ; i++){      //searching for the matching id among the posts
+        
+        if ( childNodes[i].id == "l"+ id){
+            post = childNodes[i];
+            break;
+        }
+        
+    }
+    
+    localStorage.setItem("gid", id);               //creating client side storage to store id, title, body of the post
+
+    localStorage.setItem("gpost_title",post.childNodes[1].innerText);
+    localStorage.setItem("gpost_body",post.childNodes[2].innerHTML);
+    
+    document.location.href = "posts";
 }

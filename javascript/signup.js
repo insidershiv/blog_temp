@@ -11,7 +11,7 @@ function signup(event) {
         'password': document.getElementById("password").value
     };
     
-    
+    console.log(credentials);
 
 
     $.ajax({
@@ -20,7 +20,13 @@ function signup(event) {
         data: JSON.stringify(credentials),
         success: function (response, status, xhr) {
             data = JSON.parse(response);
-            alert(data.msg);
+            //alert(data.msg);
+            if(window.confirm(data.msg + "  " + "Login to Continue")){
+                document.location.href = "index";
+            }else {
+                document.location.href = "signup";
+            }
+            
         },
         error: function (xhr, textStatus, errorMessage) {
             body = JSON.parse(xhr.responseText);

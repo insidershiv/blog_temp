@@ -59,9 +59,9 @@ class BlogManager
     }
 
 
-    public function update_post($user_id, $post_id, $post_content)
+    public function update_post($user_id, $post_id, $post_content,$post_title)
     {
-        $field_to_update = array("post_content"=>$post_content);
+        $field_to_update = array("post_content"=>$post_content,"post_title"=>$post_title);
         $conditions_for_update = array("user_id"=>$user_id, "post_id"=>$post_id);
 
         $this->querybuilder->update($field_to_update, $conditions_for_update);
